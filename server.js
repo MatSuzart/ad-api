@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const fileupload = require('express-fileupload');
 
+const apiRouter = require('./src/routes');
+
 mongoose.connect(process.env.DATABASE,{
     useNewUrlParse: true,
     useFindAndModify: false,
@@ -27,6 +29,8 @@ server.use(express.static(__dirname+'/public'));
 server.get('/ping', (req, res)=> {
     res.json({pong:true});
 });
+
+server.use('/', apiRouter);
 
 server.listen(process.env.PORT, () =>{
     console.log(`RODANDO NO ENDEREÇO: ${process.env.BASE}`)
