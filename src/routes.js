@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const Auth = require('../middleware/Auth');
+const AuthValidator = require('./validator/authValidator');
 
 const AuthController = require('./controllers/AuthController');
 const AdController = require('./controllers/AdController');
@@ -14,7 +15,7 @@ router.get('/ping', (req,res)=> {
 router.get('/states', UserController.getStates);
 
 router.post('/user/signin', AuthController.signin);
-router.post('/user/signup', AuthController.getStates);
+router.post('/user/signup', AuthValidator.singup, AuthController.getStates);
 
 router.get('/user/me', Auth.private, UserController.info);
 router.put('/user/me', Auth.private, UserController.editAction);
