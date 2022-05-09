@@ -24,5 +24,18 @@ module.exports = {
             notEmpty: true,
             errorMessage: 'ESTADO NÃO PREENCHIDO'
         }
+    }),
+    sinin: checkSchema({
+        email: {
+            isEmail: true,
+            normalizeEmail: true,
+            errorMessage: 'E-EMAIL INVALIDADO'
+        },
+        password:{
+            isLenght: {
+                options: { min: 2 }
+            },
+            errorMessage: 'SENHA PRECISA TER PELO MENOS 2 CARACTERES'
+        },
     })
 };
