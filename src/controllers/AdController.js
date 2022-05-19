@@ -1,4 +1,4 @@
-const uuid = require('uuid/v4');
+const uuid = require('uuid');
 const jimp = require('jimp');
 
 const User = require("../models/User");
@@ -62,16 +62,36 @@ module.exports = {
         newAd.views = 0;
 
 
-        if(req.file && req.files.img){
+        if(req.files && req.files.img){
             if(req.files.img.length == undefined){
+                if(['image/jpeg','image/jpg','image/png'].includes(req.files.img.minetype)){
+                let url = await addImage(req.files.imag.data);
+                newAd.images.push({
+                    url,
+                    default: false
 
+                    });
+                }
             }else {
-
+                for(let i=0; i<req.files.img.length; i++){
+                    if(['image/jpeg','image/jpg','image/png'].includes(req.files.img[i].minetype)){
+                        let url = await addImage(req.files.imag[i].data);
+                        newAd.images.push({
+                            url,
+                            default: false
+        
+                        }); 
+                    }
+                }
             }
         }
 
+        if(newAd.images.length >0){
+            newAd.images[0].default = true;
+        }
 
-        const info = await newAdd.save();
+
+        const info = await newAd.save();
         res.json({id:info._id});
 
     },
