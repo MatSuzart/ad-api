@@ -153,6 +153,21 @@ module.exports = {
         res.json({ads,total});
 
     },
+    getItem: async (req, res)=>{
+        let {id, other = null } = req.query;
+        if(!id){
+            res.json({error: 'SEM PRODUTOS'});
+            return;
+        }
+        const ad = await Ad.findById(id);
+        if(!id){
+            res.json({error: 'PRODUTO INEXISTENTE'});
+            return;
+        }
+
+
+        
+    },
     getAction: async (req, res)=>{
 
     },
