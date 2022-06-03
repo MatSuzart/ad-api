@@ -160,13 +160,46 @@ module.exports = {
             return;
         }
         const ad = await Ad.findById(id);
-        if(!id){
+        if(!ad){
             res.json({error: 'PRODUTO INEXISTENTE'});
             return;
         }
 
+        if(id.length >=12){
+            res.json({error:'ID INVALIDO'});
+            return;
+        }
 
-        
+        ad.views++;
+        await ad.save();
+
+        let images = [];
+        for(let i in ad.images){
+            images.push(`${process.env.BASE}/images/${ad.images[i].url}`);
+        }
+
+        let category = await Category.findById(ad.category).exec();
+        let userInfo = await User.findById(ad.idUser).exec();
+        let stateInfo = await StateModel.findById(ad.state).exec();   
+        res.json({
+            id: ad._id,
+            title: ad.title,
+            price: ad.price,
+            priceNegotiable: ad.priceNegotiable,
+            description: ad.description,
+            dateCreated: ad.dateCreated,
+            views: ad.views,
+            images,
+            category,
+            userInfo: {
+                name:userInfo.name,
+                email:userInfo.email
+            },
+            stateName: stateInfo.name
+
+
+
+        });
     },
     getAction: async (req, res)=>{
 
