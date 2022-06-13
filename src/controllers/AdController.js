@@ -230,7 +230,29 @@ module.exports = {
 
         });
     },
-    getAction: async (req, res)=>{
+    editAction: async (req, res)=>{
+        let { id } = req.params;
+        let {title, status, price, priceneg, desc,cat, images, token} = req.body;
 
+        if(id.length> 12){
+            res.json({error: 'ID INVALIDO'});
+            return;
+
+        }
+
+        const ad = await ad.findById(id).exec();
+        if(!id){
+            res.json({error: 'ANUNCIO INEXISTENTE'});
+            return;
+        }
+
+        const user = await User.findOne({token}).exec();
+        if(user._id.toString() !==ad.idUser){
+            res.json({error: 'ESTE ANUNCIO NÃO É SEU'});
+            return;
+
+        }
+
+        
     },
 };
