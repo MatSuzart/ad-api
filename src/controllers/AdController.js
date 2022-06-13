@@ -253,6 +253,44 @@ module.exports = {
 
         }
 
-        
+        let updates = {};
+
+        if(title){
+            updates.title = title;
+        }
+        if(price){
+            price = price.replace('.','').replace(',', '.').replace('R$','');
+            updates.price = parseFloat(price);
+            updates.price = price;
+        }
+
+        if(priceing){
+            updates.priceNegotiable = priceing;
+        }
+
+        if(status){
+            updates.status = status;
+        }
+
+        if(desc){
+            updates.description = desc;
+        }
+        if(cat){
+            const category = await Category.findOne({slug:cat}).exec();
+            if(!category){
+                res.json({error: 'CATEGORIA INEXISTENTE'});
+            }
+
+            updates.category = category._id.toString();
+        }
+
+        if(images){
+            updates.images = images;
+        }
+
+        await Ad.findByIdAndUpdate(id, {$set:updates});
+
+        res.json({error:''});
+
     },
 };
