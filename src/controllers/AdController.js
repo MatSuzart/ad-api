@@ -42,6 +42,17 @@ module.exports = {
             return;
         }
 
+        if(cat.lenght <12){
+            res.json({error:'CATEGORIA INEXISTENTE'});
+            return;
+        }
+
+        const category = await Category.findById(cat);
+        if(!cateogry){
+            res.json({error: 'CATEGORIA INEXISTENTE'});
+            return;
+        }
+
         if(price){
             price = price.replace('.','').replace(',','.').replace('R$  ','');
 
